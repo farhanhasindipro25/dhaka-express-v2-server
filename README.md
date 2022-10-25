@@ -1,4 +1,4 @@
-### SERVER SIDE Setup
+### SERVER SIDE Setup.
 **dhaka-express-v2-server**
 
 1. Make a directory and change directory to the project file.
@@ -45,9 +45,11 @@ app.listen(port, () => {
 nodemon index.js
 ```
 
-7. Make a folder 'data'. Make a file 'categories.json' inside the 'data' folder.
+### Making API for the news categories.
 
-8. In the 'index.js' file, add:
+1. Make a folder 'data'. Make a file 'categories.json' inside the 'data' folder.
+
+2. In the 'index.js' file, add:
 
 ```
 const categories = require("./data/categories.json");
@@ -65,4 +67,33 @@ app.get("/news-categories", (req, res) => {
 ```
 const cors = require('cors');
 app.use(cors());
+```
+
+### Making API of each news as per news ids.
+
+```
+const news = require("./data/news.json");
+
+app.get("/news/:id", (req, res) => {
+  const id = req.params.id;
+  const selectedNews = news.find((news) => news._id === id);
+  res.send(selectedNews);
+});
+```
+
+- ```req.params``` is an object. So to acces the id, ```req.params.id``` can be used.
+
+### Making API of the news as per the categories.
+
+```
+app.get("/category/:id", (req, res) => {
+  const id = req.params.id;
+  if (id === "08") {
+    res.send(news);
+  } 
+  else {
+    const categoryNews = news.filter((news) => news.category_id === id);
+    res.send(categoryNews);
+  }
+});
 ```
